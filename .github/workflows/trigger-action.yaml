@@ -1,0 +1,24 @@
+name: trigger-event
+
+on:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  trigger-event:
+    runs-on: ubuntu-latest
+
+    # These permissions are needed to interact with GitHub's OIDC Token endpoint.
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+    - name: Repository Dispatch
+      uses: peter-evans/repository-dispatch@v2.1.1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        repository: dagherghinescu/hello-world
+        event-type: trigger-deploy
+
